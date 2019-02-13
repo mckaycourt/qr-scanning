@@ -2,5 +2,6 @@ extends layout
 
 block content
   h1= title
-  p If you believe this is an error please contact
-  a(href='mailto:reled_support@byu.edu') reled_support@byu.edu
+  if(title !== 'Thank you for voting!')
+    p If you believe this is an error please contact
+    a(href='mailto:reled_support@byu.edu') reled_support@byu.edu
