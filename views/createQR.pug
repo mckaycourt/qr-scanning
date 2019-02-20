@@ -1,0 +1,51 @@
+extends layout
+
+block content
+    #choices-div
+        #title
+            input(type='text' id='name' placeholder='Survey Name')
+        #numbers
+            input(type='number' id='number' value='0')
+            button(onclick='updateChoices()') Submit
+        #choices
+        #qrs
+
+
+
+    script.
+        function generateQR() {
+            console.log('generate QR');
+            let choices = document.querySelectorAll('.choice');
+            let name = document.querySelector('#name').value;
+            for (let choice of choices) {
+                console.log(choice.value);
+                let div = document.createElement('div');
+                let h2 = document.createElement('h2');
+                let title = document.createTextNode('Choice: ' + choice.value);
+                h2.appendChild(title);
+                div.appendChild(h2);
+                let img = document.createElement('img');
+                let url = encodeURIComponent(`religion.byu.edu/survey?name='${name.replace(/\s/g, '')}'&choice=${choice.value.replace(/\s/g, '')}`);
+                img.src = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${url}`;
+                div.appendChild(img);
+                document.querySelector('#qrs').appendChild(div);
+            }
+        }
+
+        function updateChoices() {
+            let number = document.querySelector('#number').value;
+            let choices = document.querySelector('#choices');
+            for (let i = 0; i < number; i++) {
+                let div = document.createElement('div');
+                let input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'choice'
+                div.appendChild(input);
+                choices.appendChild(div);
+            }
+            let submit = document.createElement('button');
+            let text = document.createTextNode('Generate');
+            submit.appendChild(text);
+            submit.onclick = generateQR;
+            choices.appendChild(submit);
+        }
