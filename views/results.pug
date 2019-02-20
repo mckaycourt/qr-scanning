@@ -1,6 +1,15 @@
 extends layout
 
 block content
+    h1 Choices for #{name}
+
+    each choice in options
+        div
+            h2= choice
+            let url = encodeURIComponent(`http://10.37.187.159:3000/?survey=${name.replace(/\s/g, '')}&choice=${choice.value.replace(/\s/g, '')}`);
+                img.src = ``
+            img(src='https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=#{url}')
+
     h1 Results for #{name}
 
     each result in results

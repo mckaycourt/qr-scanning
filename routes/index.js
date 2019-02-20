@@ -38,10 +38,14 @@ router.get('/createQR', function (req, res, next) {
     res.render('createQR', {});
 });
 
+router.get('/createSurvey', function (req, res, next) {
+    res.render('createSurvey', {});
+});
+
 router.get('/surveys', function (req, res, next) {
     let database = new Database(config.getConfig());
     let surveys = {};
-    database.query(`SELECT DISTINCT survey FROM voting`)
+    database.query(`SELECT name FROM surveys`)
         .then(rows => {
             surveys = rows;
             database.close();
@@ -60,16 +64,27 @@ router.get('/results', function (req, res, next) {
         .then(rows => {
             console.log(rows);
             results = rows;
+            return database.query(`SELECT choices FROM surveys WHERE name = '${name}'`)
         })
-        .then(() => {
+        .then(rows => {
             database.close();
-            res.render('results', {results, name});
+            let options = JSON.parse(rows[0].choices);
+            res.render('results', {results, name, options});
         })
         .catch(err => {
             console.log(err);
         });
+});
 
-
+router.post('/createSurvey', function (req, res, next) {
+    let database = new Database(config.getConfig());
+    let name = req.body.name;
+    let choices = req.body.choices;
+    database.query('INSERT INTO surveys (name, choices) VALUES (?, ?)', [name, choices])
+        .then(() => {
+            database.close();
+            res.redirect('/surveys');
+        })
 });
 
 module.exports = router;
