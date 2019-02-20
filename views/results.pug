@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    h1 Results for #{name}
+
+    each result in results
+        h2= 'Choice: ' + result.choice
+        p= 'Count: ' + result['COUNT(*)']

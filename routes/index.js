@@ -31,8 +31,6 @@ router.get('/', function (req, res, next) {
         .catch(err => {
             console.log(err);
         });
-    console.log(`insert into database: id=${req.connection.remoteAddress} choice = ${choice}`);
-
 
 });
 
@@ -40,8 +38,38 @@ router.get('/createQR', function (req, res, next) {
     res.render('createQR', {});
 });
 
+router.get('/surveys', function (req, res, next) {
+    let database = new Database(config.getConfig());
+    let surveys = {};
+    database.query(`SELECT DISTINCT survey FROM voting`)
+        .then(rows => {
+            surveys = rows;
+            database.close();
+            res.render('surveys', {surveys});
+        })
+        .catch(err => {
+            console.log(err);
+        })
+});
+
 router.get('/results', function (req, res, next) {
-    res.render('results', {});
+    let database = new Database(config.getConfig());
+    let name = req.query.survey;
+    let results = {};
+    database.query(`SELECT choice, COUNT(*) FROM voting WHERE survey='${name}' GROUP BY choice`)
+        .then(rows => {
+            console.log(rows);
+            results = rows;
+        })
+        .then(() => {
+            database.close();
+            res.render('results', {results, name});
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+
 });
 
 module.exports = router;

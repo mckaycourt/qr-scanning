@@ -1,0 +1,6 @@
+extends layout
+
+block content
+    each survey in surveys
+        div
+            a(href='http://localhost:3000/results?survey=' + survey.survey)= survey.survey
