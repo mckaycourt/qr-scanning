@@ -9,11 +9,11 @@ router.get('/', function (req, res, next) {
     let ipAddress = req.connection.remoteAddress;
     let choice = req.query.choice;
     let survey = req.query.survey;
-    let query = 'SELECT * FROM voting WHERE ipAddress = ? AND timeStamp > ?';
+    let query = 'SELECT * FROM voting WHERE ipAddress = ? AND timeStamp > ? AND survey = ?';
     let currentDate = new Date();
     let date = new Date();
     date.setMinutes(currentDate.getMinutes() - 30);
-    database.query(query, [ipAddress, date])
+    database.query(query, [ipAddress, date, survey])
         .then(rows => {
             let returnStatement = 'Select * from voting';
             if (rows.length) {
@@ -78,7 +78,7 @@ router.get('/results', function (req, res, next) {
 
 router.post('/createSurvey', function (req, res, next) {
     let database = new Database(config.getConfig());
-    let name = req.body.name;
+    let name = req.body.name.replace(/\s/g, '');
     let choices = req.body.choices;
     database.query('INSERT INTO surveys (name, choices) VALUES (?, ?)', [name, choices])
         .then(() => {
