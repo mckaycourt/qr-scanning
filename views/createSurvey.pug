@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    form(action='/createSurvey' method='POST')
+        #choices-div
+            #title
+                input(type='text' id='name' name='name' placeholder='Survey Name')
+            #numbers
+                input(type='number' id='number' name='number' value='0')
+            input(type='submit')
