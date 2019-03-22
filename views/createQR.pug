@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    form#form(action='#{location}/createSurvey' method='POST')
+    form#form(action=`${location}/createSurvey` method='POST')
         #choices-div
             #title
                 input(type='text' id='name' name='name' placeholder='Survey Name')
