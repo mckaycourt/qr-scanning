@@ -35,7 +35,8 @@ router.get('/vote', function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    res.render('createQR', {});
+    let location = config.getLocation();
+    res.render('createQR', {location});
 });
 
 router.get('/surveys', function (req, res, next) {
@@ -73,13 +74,14 @@ router.get('/results', function (req, res, next) {
 });
 
 router.post('/createSurvey', function (req, res, next) {
+    let location = config.getLocation();
     let database = new Database(config.getConfig());
     let name = req.body.name.replace(/\s/g, '');
     let choices = req.body.choices;
     database.query('INSERT INTO surveys (name, choices) VALUES (?, ?)', [name, choices])
         .then(() => {
             database.close();
-            res.redirect('/surveys');
+            res.redirect(location+'/surveys');
         })
 });
 
