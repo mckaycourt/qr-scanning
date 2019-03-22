@@ -3,7 +3,7 @@ let router = express.Router();
 let Database = require('../database/database');
 let config = require('./config');
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/vote', function (req, res, next) {
     let title = 'Thank you for voting!';
     let database = new Database(config.getConfig());
     let ipAddress = req.connection.remoteAddress;
@@ -34,12 +34,8 @@ router.get('/', function (req, res, next) {
 
 });
 
-router.get('/createQR', function (req, res, next) {
+router.get('/', function (req, res, next) {
     res.render('createQR', {});
-});
-
-router.get('/createSurvey', function (req, res, next) {
-    res.render('createSurvey', {});
 });
 
 router.get('/surveys', function (req, res, next) {
