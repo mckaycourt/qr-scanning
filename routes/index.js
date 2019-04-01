@@ -7,6 +7,7 @@ router.get('/vote', function (req, res, next) {
     let title = 'Thank you for voting!';
     let database = new Database(config.getConfig());
     let ipAddress = req.connection.remoteAddress;
+    console.log('vote by ' + ipAddress);
     let choice = req.query.choice;
     let survey = req.query.survey;
     let query = 'SELECT * FROM voting WHERE ipAddress = ? AND timeStamp > ? AND survey = ?';
