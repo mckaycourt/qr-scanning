@@ -10,20 +10,22 @@ router.get('/vote', function (req, res, next) {
     console.log(req.connection);
     let choice = req.query.choice;
     let survey = req.query.survey;
-    let query = 'SELECT * FROM voting WHERE ipAddress = ? AND timeStamp > ? AND survey = ?';
+    // let query = 'SELECT * FROM voting WHERE ipAddress = ? AND timeStamp > ? AND survey = ?';
+    let query = 'INSERT INTO voting (ipAddress, survey, choice) VALUES(?,?,?)';
     let currentDate = new Date();
     let date = new Date();
     date.setMinutes(currentDate.getMinutes() - 30);
-    database.query(query, [ipAddress, date, survey])
+    database.query(query, [ipAddress, survey, choice])
         .then(rows => {
-            let returnStatement = 'Select * from voting';
-            if (rows.length) {
-                title = 'Your vote has already been recorded';
-            }
-            else {
-                returnStatement = 'INSERT INTO voting (ipAddress, survey, choice) VALUES(?,?,?)';
-            }
-            return database.query(returnStatement, [ipAddress, survey, choice]);
+            // let returnStatement = 'Select * from voting';
+            // if (rows.length) {
+            //     title = 'Your vote has already been recorded';
+            // }
+            // else {
+            //     returnStatement = 'INSERT INTO voting (ipAddress, survey, choice) VALUES(?,?,?)';
+            // }
+            // return database.query(returnStatement, [ipAddress, survey, choice]);
+            console.log('vote for ' + choice);
         })
         .then(() => {
             database.close();
