@@ -39,7 +39,7 @@ router.get('/vote', function (req, res, next) {
 });
 
 router.get('/voted', function (req,res,next) {
-    res.render('index', {title: 'Thank you for voting'})
+    res.render('index', {title: 'Thank you for voting!'})
 });
 
 router.get('/', function (req, res, next) {
