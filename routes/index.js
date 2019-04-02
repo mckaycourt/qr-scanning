@@ -4,6 +4,7 @@ let Database = require('../database/database');
 let config = require('./config');
 /* GET home page. */
 router.get('/vote', function (req, res, next) {
+    let location = config.getLocation();
     let title = 'Thank you for voting!';
     let database = new Database(config.getConfig());
     let ipAddress = req.connection.remoteAddress;
@@ -29,12 +30,16 @@ router.get('/vote', function (req, res, next) {
         })
         .then(() => {
             database.close();
-            res.render('index', {title});
+            res.redirect(location+'/voted')
         })
         .catch(err => {
             console.log(err);
         });
 
+});
+
+router.get('/voted', function (req,res,next) {
+    res.render('index', {title: 'Thank you for voting'})
 });
 
 router.get('/', function (req, res, next) {
